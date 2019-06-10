@@ -55,6 +55,7 @@ if (isset($_POST['email']) && empty($_POST['email']) == false) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="fontawesome/css/all.css">
     <title>Login - SOE</title>
 </head>
 
@@ -76,14 +77,14 @@ if (isset($_POST['email']) && empty($_POST['email']) == false) {
                 <div class="card-body">
                     <form method="POST">
                         <div class="form-group">
-                            <input type="email" class="form-control" placeholder="E-mail" name="email">
+                            <input type="email" class="form-control" placeholder="E-mail" name="email" id="email">
                         </div>
 
                         <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Senha" name="senha">
+                            <input type="password" class="form-control" placeholder="Senha" name="senha" id="senha">
                         </div>
 
-                        <input type="submit" class="btn btn-lg btn-info btn-block" value="Entrar">
+                        <input type="submit" class="btn btn-lg btn-info btn-block" value="Entrar" id="submit">
 
                         <a href="cadastrar.php" class="btn btn-lg btn-info btn-block">Cadastrar</a>
                     </form>
@@ -96,26 +97,13 @@ if (isset($_POST['email']) && empty($_POST['email']) == false) {
     </div>
 
 
-    <!--
-    <form method="POST" class="form-group">
-        E-mail: <br>
-        <input type="email" name="email"> <br><br>
-
-        Senha: <br>
-        <input type="password" name="senha"> <br><br>
-        
-        <input class="btn btn-primary" type="submit" value="Entrar">
-
-        <a href="cadastrar.php" class="btn btn-primary">Cadastrar</a>
-    </form>
--->
-
 
 
 
 
     <script src="assets/js/jquery.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

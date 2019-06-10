@@ -1,7 +1,90 @@
 
-body{
-    font-size: .875rem;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+html, body{
+    height: 100%;
+    background: #FAF9FC;
+}
+
+div.side-bar{
+    width: 18%;
+    background: #2D3035;
+    height: 100%;
+    max-width: 300px;
+    float: left;
+}
+
+div.topo{
+    background: #26282D;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+div.topo h3{
+    color: white;
+}
+
+div.menu{
+    padding: 30px;
+}
+
+div.menu ul{
+    list-style-type: none;
+}
+
+div.menu li{
+    transition: 0.6s;
+    font-size: 18px;
+    color: #717171;
+    margin-bottom: 20px;
+}
+
+div.menu ul li a{
+    font-size: 19px;
+    color: #717171;
+    text-decoration: none;
+    padding: 10px;
+}
+
+div.menu li:hover i{
+    transition: 0.6s;
+    color: #4286f4;
+}
+
+div.menu li:hover a{
+    transition: 0.6s;
+    color: white;
+}
+
+/*Fim da side-bar*/
+
+div.main-content{
+    float: left;
+    width: calc(100% - 18%);
+    height: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .sidebar {
     top: 0;
@@ -10,6 +93,13 @@ body{
     padding: 48px 0 0; /* Altura do navbar */
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
+
+.sidebar-sticky{
+    background: #2D3035;
+    margin-bottom: 30px;
+}
+
+
 
 
 

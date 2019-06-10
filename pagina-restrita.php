@@ -1,11 +1,41 @@
-
 <?php
 session_start();
+require 'config.php';
 
-if(isset($_SESSION['id']) && empty($_SESSION['id'])){
+if (isset($_SESSION['id']) && empty($_SESSION['id'])) {
     $session_id = $_SESSION['id'];
-
 }
+
+$quantidadeOcorrenciasEmCadaMes = array();
+
+$sql = "
+SELECT Month(data) as mes,  COUNT(Month(data)) as quantidade
+FROM ocorrencias
+GROUP BY Month(data)
+ORDER BY Month(data);
+";
+$sql = $pdo->query($sql);
+
+
+if ($sql->rowCount() > 0) {
+    $dados = $sql->fetchAll();
+    foreach ($dados as $dadosMensais) {
+        $quantidadeOcorrenciasEmCadaMes[$dadosMensais['mes']] = $dadosMensais['quantidade'];
+    }
+}
+
+
+for ($i = 1; $i <= 12; $i++) {
+    if ($quantidadeOcorrenciasEmCadaMes[$i] == null) {
+        $quantidadeOcorrenciasEmCadaMes[$i] = 0;
+    }
+}
+ksort($quantidadeOcorrenciasEmCadaMes);
+
+
+
+
+
 
 
 ?>
@@ -24,65 +54,45 @@ if(isset($_SESSION['id']) && empty($_SESSION['id'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Página restrita</title>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-dark bg-dark">
-        <a href="#" class="navbar-brand">
-            SOE
-        </a>
-
-        <div class="d-flex justify-content-end sair">
-            <a href="logout.php" class="btn btn-outline-info">Sair</a>
+    <div class="side-bar">
+        <div class="topo">
+            <h3>SOE</h3>
         </div>
-    </nav>
+        <!--topo-->
+        <div class="menu">
+            <ul>
+                <li><i class="fas fa-tachometer-alt"></i><a href="#">Home</a></li>
+                <li><i class="fas fa-user-plus"></i><a href="adicionar_ocorrencia.php">Adicionar aluno</a></li>
+                <li><i class="far fa-list-alt"></i><a href="listar_alunos.php">Lista de alunos</a></li>
+                <li><i class="fas fa-sign-out-alt"></i><a href="logout.php">Sair</a></li>
 
-    <div class="container-fluid md-">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="pagina-restrita.php">
-                                <span data-feather="home"></span>
-                                Dashboard <span class="sr-only">(atual)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="adicionar_ocorrencia.php">
-                                <span data-feather="file"></span>
-                                Adicionar aluno
-                            </a>
-                        </li>
-             
-                        <li class="nav-item">
-                            <a class="nav-link" href="listar_alunos.php">
-                                <span data-feather="users"></span>
-                                Lista de alunos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="bar-chart-2"></span>
-                                Relatórios
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="layers"></span>
-                                Integrações
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            </ul>
         </div>
+        <!--menu-->
+
     </div>
+    <!--side_bar-->
 
+    <div class="main-content">
+        <header>
+            <div class="pesquisa-campo">
+                <div class="icone-pesquisa"></div>
+            </div>
+            <!--pesquisa-campo-->
+        </header>
+        <div style="width: 600px">
+            <canvas id="grafico"></canvas>
+        </div>
+       
 
+    </div> <!-- main-content -->
 
 
 
@@ -90,6 +100,30 @@ if(isset($_SESSION['id']) && empty($_SESSION['id'])){
 
     <script src="assets/js/jquery.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="assets/js/Chart.min.js"></script>
+
+    <script type="text/javascript">
+        window.onload = function() {
+            var contexto = document.getElementById("grafico").getContext("2d");
+            var grafico = new Chart(contexto, {
+                type: 'line',
+                data: {
+                    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                    datasets: [{
+                        label: 'Número de ocorrências por mês',
+                        backgroundColor: 'blue',
+                        borderColor: 'blue',
+                        data: [
+                            <?php echo implode(',', $quantidadeOcorrenciasEmCadaMes)   ?>
+                        ],
+                        fill:false
+                    }],
+                },
+ 
+            });
+        }
+    </script>
+
 </body>
 
 </html>
