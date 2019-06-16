@@ -11,6 +11,7 @@ $quantidadeOcorrenciasEmCadaMes = array();
 $sql = "
 SELECT Month(data) as mes,  COUNT(Month(data)) as quantidade
 FROM ocorrencias
+WHERE id_escola = ".$_SESSION['id']."
 GROUP BY Month(data)
 ORDER BY Month(data);
 ";
@@ -87,7 +88,7 @@ ksort($quantidadeOcorrenciasEmCadaMes);
             </div>
             <!--pesquisa-campo-->
         </header>
-        <div style="width: 600px">
+        <div style="width: 600px" class="grafico">
             <canvas id="grafico"></canvas>
         </div>
        

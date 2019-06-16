@@ -3,6 +3,7 @@ session_start();
 use Dompdf\Dompdf;
 
 require "config.php";
+require "mensagem.php";
 
 
 
@@ -30,28 +31,14 @@ if (isset($_GET['id']) && empty($_GET['id']) == false) {
 if (isset($_POST['mensagem']) && empty($_POST['mensagem']) == false) {
     $mensagem = $_POST['mensagem'];
 
-    $sql = "INSERT INTO ocorrencias SET id_aluno = :id, data = :data, serie = :serie";
+    $sql = "INSERT INTO ocorrencias SET id_aluno = :id, data = :data, serie = :serie, id_escola = :id_escola";
     $sql = $pdo->prepare($sql);
     $sql->bindValue(":id", $idAluno);
     $sql->bindValue(":data", date('Y-m-d'));
     $sql->bindValue(":serie", $serie);
+    $sql->bindValue(":id_escola", $_SESSION['id']);
     $sql->execute();
 }
-/*
-//obter nome da escola
-if(isset($_SESSION['id']) && empty($_SESSION['id']) == false){
-    $idEscola = $_SESSION['id'];
-
-    $sql = "SELECT * FROM escola WHERE id = :idEscola";
-    $sql = $pdo->prepare($sql);
-    $sql->bindValue(":idEscola", $idEscola);
-    if($sql->rowCount() > 0){
-        $dados = $sql->fetch();
-        $nomeEscola = $dados['nome_escola'];
-    }
-}
-*/
-
 
 
 function conectarAoBanco()
@@ -86,52 +73,6 @@ function obterNomeDaEscola($id)
     }
 }
 
-function enviarEmail($emailDestinatario, $nomeDestinatario)
-{
-    include("phpmailer/class.phpmailer.php");
-
-
-    // Load Composer's autoloader
-
-    // Instantiation and passing `true` enables exceptions
-    $mail = new PHPMailer;
-
-    try {
-        //Server settings
-        $mail->isSMTP();                                            // Set mailer to use SMTP
-        $mail->Host       = 'smtp.gmail.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'jeffersonsevero08@gmail.com';                     // SMTP username
-        $mail->Password   = 'jefinho1234';                               // SMTP password
-        $mail->SMTPSecure = 'ssl';                                  // Enable TLS encryption, `ssl` also accepted
-        $mail->Port       = 465;                                    // TCP port to connect to
-
-        //Recipients
-        $mail->setFrom('jeffersonsevero08@gmail.com', 'Jefferson');
-        $mail->addAddress($emailDestinatario, $nomeDestinatario);     // Add a recipient
-        //$mail->addReplyTo('info@example.com', 'Information');
-        //$mail->addCC('cc@example.com');
-        //$mail->addBCC('bcc@example.com');
-
-        // Attachments
-        $mail->addAttachment('/var/www/html/soe/arquivos/arquivo.pdf');         // Add attachments
-        //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
-
-        // Content
-        $mail->isHTML(true);                                  // Set email format to HTML
-        $mail->Subject = 'Here is the subject';
-        $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-        $mail->send();
-        echo 'Message has been sent';
-    } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-    }
-}
-
-
-
 
 
 
@@ -145,11 +86,18 @@ if (isset($_POST['acao']) && empty($_POST['acao']) == false) {
 
     $dompdf = new Dompdf();
 
-    $corpo = "<h1> Oficio de ocorrência </h1>
-             <h3>" . $nomeEscola . "</h3>   <br>
+    $corpo = "<meta charset='UTF-8'>
+    <u><h1 style='text-align: center'> Oficio de ocorrência </h1></u>
+             <h3 style='text-align: center'>" . $nomeEscola . "</h3>   <br>
 
-    Senhor/senhora " . $nomeResponsavel . ", foi detectado que (a) estudante " . $nomeAluno . ",  do " . $serie . "º ano 
-    desta instituição cometeu a seguinte situação: " . $mensagem . "
+    Senhor/senhora " . $nomeResponsavel . ", foi detectado que o/a estudante " . $nomeAluno . ",  do " . $serie . "º ano 
+    desta instituição cometeu a seguinte situação: " . $mensagem . ". <br>
+    Nossa missão é cultivar a transparência desta instituição e manter os pais informados sobre todos os passos dos
+    seus filhos. <br><br>
+    Esperamos que o comportamento ruin seja corrigido. <br><br>
+
+    Att, <br><br>
+    ".$nomeEscola."
 ";
 
     $dompdf->load_html($corpo);
@@ -158,24 +106,16 @@ if (isset($_POST['acao']) && empty($_POST['acao']) == false) {
     $pdf = $dompdf->output();
     $file_location = $_SERVER['DOCUMENT_ROOT'] . "/soe/arquivos/arquivo.pdf";
     file_put_contents($file_location, $pdf);
-    enviarEmail('jeffersontubiba@gmail.com', 'Jefferson');
-    exit();
+   $msg = new Mensagem();
+   $msg->enviarEmail($emailResponsavel, $nomeResponsavel, $nomeEscola);
+   echo "<div class='alerta-geral'>
+            <div class='alert alert-success' role='alert'>
+                E-mail enviado com sucesso!
+            </div>
+        </div>";
+    sleep(2);    
     header("Location: listar_alunos.php");
-
 }
-
-
-
-
-
-/*
-if(isset($_POST['acao']) && empty($_POST['acao']) == false){
-    $notificacao = new Notificacao();
-    $notificacao->adicionarOcorrencia($idAluno, date('Y-m-d'), $serie);
-}
-*/
-
-
 
 
 

@@ -44,7 +44,7 @@ session_start();
             <?php
             require "config.php";
 
-            $sql = "SELECT * FROM aluno";
+            $sql = "SELECT * FROM aluno WHERE id_escola = ".$_SESSION['id'];
 
             $sql = $pdo->query($sql);
 

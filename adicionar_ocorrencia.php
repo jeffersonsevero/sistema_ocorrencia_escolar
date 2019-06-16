@@ -31,7 +31,7 @@ if (isset($_POST['nome']) && empty($_POST['nome']) == false) {
     } else {
 
         $query = "INSERT INTO aluno SET nome_aluno = :nome, serie = :serie, nome_responsavel = :nome_responsavel,
-        email_responsavel = :email_responsavel";
+        email_responsavel = :email_responsavel, id_escola = :id_escola ";
 
 
         $query = $pdo->prepare($query);
@@ -40,6 +40,7 @@ if (isset($_POST['nome']) && empty($_POST['nome']) == false) {
         $query->bindValue(":serie", $serie);
         $query->bindValue(":nome_responsavel", $nome_responsavel);
         $query->bindValue(":email_responsavel", $email_responsavel);
+        $query->bindValue(":id_escola", $_SESSION['id']);
 
 
         $query->execute();
