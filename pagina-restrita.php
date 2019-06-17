@@ -38,6 +38,39 @@ ksort($quantidadeOcorrenciasEmCadaMes);
 
 
 
+$quantidadeOcorrenciasPorSerie = [];
+
+$consulta = "SELECT serie, COUNT(*) as contagem
+FROM ocorrencias
+WHERE id_escola = :id_escola
+GROUP BY serie";
+
+$consulta = $pdo->prepare($consulta);
+$consulta->bindValue(":id_escola", $_SESSION['id']);
+$consulta->execute();
+
+
+if($consulta->rowCount() > 0){
+    $dados = $consulta->fetchAll();
+    foreach($dados as $dadosPorSerie){
+        $quantidadeOcorrenciasPorSerie[$dadosPorSerie['serie']] = $dadosPorSerie['contagem'];
+    }
+   
+}
+
+for($i = 1; $i <= 9; $i++){
+    if($quantidadeOcorrenciasPorSerie[$i] == null){
+        $quantidadeOcorrenciasPorSerie[$i] = 0;
+    }
+}
+
+ksort($quantidadeOcorrenciasPorSerie);
+
+
+
+
+
+
 
 ?>
 
@@ -91,6 +124,10 @@ ksort($quantidadeOcorrenciasEmCadaMes);
         <div style="width: 600px" class="grafico">
             <canvas id="grafico"></canvas>
         </div>
+
+        <div style="width: 600px" class="grafico">
+            <canvas id="grafico2"></canvas>
+        </div>
        
 
     </div> <!-- main-content -->
@@ -122,6 +159,27 @@ ksort($quantidadeOcorrenciasEmCadaMes);
                 },
  
             });
+
+
+            var contexto = document.getElementById("grafico2").getContext("2d");
+            var grafico = new Chart(contexto, {
+                type: 'bar',
+                data: {
+                    labels: ['1º', '2º', '3º', '4º', '5º', '6º', '7º', '8º', '9º'],
+                    datasets: [{
+                        label: 'Número de ocorrências por série',
+                        backgroundColor: 'red',
+                        borderColor: 'red',
+                        data: [
+                            <?php echo implode(',', $quantidadeOcorrenciasPorSerie)   ?>
+                        ],
+                        fill:false
+                    }],
+                },
+ 
+            });
+
+
         }
     </script>
 

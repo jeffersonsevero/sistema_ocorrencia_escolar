@@ -53,7 +53,7 @@ if (isset($_GET['id']) && empty($_GET['id']) == false) {
         </div>
     </nav>
     <div class="container">
-        <h1>Enviar notificação para responsável</h1>
+        <h1>Enviar e-mail para responsável</h1>
 
         <form method="POST">
             Nome do aluno: <br>

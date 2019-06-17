@@ -56,7 +56,9 @@ session_start();
                     echo "<td>" . $dado['serie'] . "</td>";
                     echo "<td>" . $dado['nome_responsavel'] . "</td>";
                     echo "<td>" . $dado['email_responsavel'] . "</td>";
-                    echo '<td> <a href="notificacao.php?id='.$dado['id'].'">Enviar notificação</a>  </td>';
+                    echo '<td> <a href="notificacao.php?id='.$dado['id'].'"><img src="assets/images/email.png"></a>  </td>';
+                    echo '<td> <a href="sms.php?id='.$dado['id'].'"><img src="assets/images/sms.png"></a>  </td>';
+                    echo '<td> <a href="telegram.php?id='.$dado['id'].'"><img src="assets/images/telegram.png"></a>  </td>';
                     echo "</tr>";
                     
                 }

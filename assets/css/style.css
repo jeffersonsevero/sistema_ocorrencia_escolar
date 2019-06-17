@@ -70,7 +70,9 @@ div.main-content{
 
 .grafico{
     margin: 0 auto;
-    margin-top: 30px;
+    border: 0.8px solid #bcbdc6;
+    background-color: white;
+    margin-bottom: 10px;
 }
 
 
@@ -119,15 +121,15 @@ div.main-content{
 
 .card-login{
     padding: 30px;
-    width: 350px;
+    width: 400px;
     margin: 0 auto;
-    border: 1px solid #c5c5c5;
-    margin-top: 30px;
+    margin-top: 0px;
 
 }
 
 .card-header{
     width: 100%;
+    margin-top: -40px;
 }
 
 .formulario{
@@ -141,5 +143,12 @@ div.main-content{
     left: 25%;
     top: 90%;
 
+}
+
+.logo img{
+    width: 300px;
+    height: 300px;;
+    margin: 0 auto;
+    margin-top: -50px;
 }
 

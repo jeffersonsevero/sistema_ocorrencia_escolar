@@ -26,6 +26,9 @@
     <div class="container">
         <div class="row">
             <div class="card-login">
+                <div class="logo">
+                    <img src="assets/images/logo-completa.png">
+                </div>
                 <div class="card-header">
                     Login
                 </div>
