@@ -63,7 +63,7 @@ class Mensagem{
             $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
     
             $mail->send();
-            echo 'Mensagem enviada com sucesso';
+            //echo 'Mensagem enviada com sucesso';
             return true;
         } catch (Exception $e) {
             echo "A mensagem não pôde ser enviada. Mailer Error: {$mail->ErrorInfo}";

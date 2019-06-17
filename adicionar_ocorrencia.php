@@ -1,73 +1,3 @@
-<?php
-session_start();
-require "config.php";
-
-if (isset($_POST['nome']) && empty($_POST['nome']) == false) {
-    $nome = $_POST['nome'];
-    $serie = $_POST['serie'];
-    $nome_responsavel = $_POST['nome_responsavel'];
-    $email_responsavel = $_POST['email_responsavel'];
-
-
-
-
-
-    $sql = "SELECT * FROM aluno WHERE nome_aluno = :nome";
-
-    $sql = $pdo->prepare($sql);
-
-    $sql->bindValue(":nome", $nome);
-
-    $sql->execute();
-
-
-
-    if ($sql->rowCount() > 0) {
-        echo "<div class='alerta-geral'>
-        <div class='alert alert-danger' role='alert'>
-            Aluno já está cadastrado
-        </div>
-        </div>";
-    } else {
-
-        $query = "INSERT INTO aluno SET nome_aluno = :nome, serie = :serie, nome_responsavel = :nome_responsavel,
-        email_responsavel = :email_responsavel, id_escola = :id_escola ";
-
-
-        $query = $pdo->prepare($query);
-
-        $query->bindValue(":nome", $nome);
-        $query->bindValue(":serie", $serie);
-        $query->bindValue(":nome_responsavel", $nome_responsavel);
-        $query->bindValue(":email_responsavel", $email_responsavel);
-        $query->bindValue(":id_escola", $_SESSION['id']);
-
-
-        $query->execute();
-
-        echo "<div class='alerta-geral'>
-            <div class='alert alert-success' role='alert'>
-                Aluno cadastrado com sucesso.
-            </div>
-        </div>";
-    }
-}
-
-
-
-
-
-
-
-?>
-
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +9,8 @@ if (isset($_POST['nome']) && empty($_POST['nome']) == false) {
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Template Bootstrap</title>
+    <link rel="stylesheet" href="assets/css/sweet.min.css">
+    <script src="assets/js/sweet.min.js"></script>
 </head>
 
 <body>
@@ -138,3 +70,71 @@ if (isset($_POST['nome']) && empty($_POST['nome']) == false) {
 </body>
 
 </html>
+
+
+
+
+
+<?php
+session_start();
+require "config.php";
+
+if (isset($_POST['nome']) && empty($_POST['nome']) == false) {
+    $nome = $_POST['nome'];
+    $serie = $_POST['serie'];
+    $nome_responsavel = $_POST['nome_responsavel'];
+    $email_responsavel = $_POST['email_responsavel'];
+
+
+
+
+
+    $sql = "SELECT * FROM aluno WHERE nome_aluno = :nome AND id_escola = ".$_SESSION['id'];
+
+    $sql = $pdo->prepare($sql);
+
+    $sql->bindValue(":nome", $nome);
+
+    $sql->execute();
+
+
+
+    if ($sql->rowCount() > 0) {
+        echo "<script>
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Aluno já cadastrado!',
+    })
+        </script>";
+    
+    } else {
+
+        $query = "INSERT INTO aluno SET nome_aluno = :nome, serie = :serie, nome_responsavel = :nome_responsavel,
+        email_responsavel = :email_responsavel, id_escola = :id_escola ";
+
+
+        $query = $pdo->prepare($query);
+
+        $query->bindValue(":nome", $nome);
+        $query->bindValue(":serie", $serie);
+        $query->bindValue(":nome_responsavel", $nome_responsavel);
+        $query->bindValue(":email_responsavel", $email_responsavel);
+        $query->bindValue(":id_escola", $_SESSION['id']);
+
+
+        $query->execute();
+
+        echo 
+        "<script>
+                Swal.fire(
+                  'Ok!',
+                  'Aluno cadastrado com sucesso!',
+                  'success'
+                )
+        </script>";
+    }
+}
+
+
+?>

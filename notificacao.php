@@ -1,7 +1,5 @@
 <?php
 session_start();
-use Dompdf\Dompdf;
-
 require "config.php";
 require "mensagem.php";
 
@@ -25,6 +23,77 @@ if (isset($_GET['id']) && empty($_GET['id']) == false) {
         $emailResponsavel = $dadosAluno['email_responsavel'];
     }
 }
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <title>SOE - Notificação</title>
+    <link rel="stylesheet" href="assets/css/sweet.min.css">
+    <script src="assets/js/sweet.min.js"></script>
+</head>
+
+<body>
+
+  
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a href="#" class="navbar-brand">
+            SOE
+        </a>
+        <div class="d-flex justify-content-end sair">
+            <a href="pagina-restrita.php" class="btn btn-outline-info">Voltar</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Enviar notificação para responsável</h1>
+
+        <form method="POST">
+            Nome do aluno: <br>
+            <input type="text" value="<?php echo $nomeAluno ?>"> <br><br>
+
+            Série: <br>
+            <input type="text" value="<?php echo $serie ?>"> <br><br>
+
+            Nome responsável: <br>
+            <input type="text" value="<?php echo $nomeResponsavel ?>"> <br><br>
+
+            E-mail responsável: <br>
+            <input type="text" value="<?php echo $emailResponsavel ?>"> <br><br>
+
+            Descrição da notificação: <br>
+            <textarea name="mensagem" id="" cols="50" rows="8"></textarea> <br><br>
+
+            <input type="submit" value="Enviar notificação" name="acao">
+        </form>
+
+
+    </div>
+
+
+
+
+
+
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+
+
+<?php
+use Dompdf\Dompdf;
+
+
 
 
 
@@ -108,85 +177,16 @@ if (isset($_POST['acao']) && empty($_POST['acao']) == false) {
     file_put_contents($file_location, $pdf);
    $msg = new Mensagem();
    $msg->enviarEmail($emailResponsavel, $nomeResponsavel, $nomeEscola);
-   echo "<div class='alerta-geral'>
-            <div class='alert alert-success' role='alert'>
-                E-mail enviado com sucesso!
-            </div>
-        </div>";
-    sleep(2);    
-    header("Location: listar_alunos.php");
+   echo "<script>
+   Swal.fire(
+     'OK!',
+     'E-mail enviado com sucesso!',
+     'success'
+   )
+    </script>";
+            
 }
 
 
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <title>Template Bootstrap</title>
-</head>
-
-<body>
-
-
-    <nav class="navbar navbar-dark bg-dark">
-        <a href="#" class="navbar-brand">
-            SOE
-        </a>
-        <div class="d-flex justify-content-end sair">
-            <a href="pagina-restrita.php" class="btn btn-outline-info">Voltar</a>
-        </div>
-    </nav>
-    <div class="container">
-        <h1>Enviar notificação para responsável</h1>
-
-        <form method="POST">
-            Nome do aluno: <br>
-            <input type="text" value="<?php echo $nomeAluno ?>"> <br><br>
-
-            Série: <br>
-            <input type="text" value="<?php echo $serie ?>"> <br><br>
-
-            Nome responsável: <br>
-            <input type="text" value="<?php echo $nomeResponsavel ?>"> <br><br>
-
-            E-mail responsável: <br>
-            <input type="text" value="<?php echo $emailResponsavel ?>"> <br><br>
-
-            Descrição da notificação: <br>
-            <textarea name="mensagem" id="" cols="50" rows="8"></textarea> <br><br>
-
-            <input type="submit" value="Enviar notificação" name="acao">
-        </form>
-
-
-    </div>
-
-
-
-
-
-
-
-    <script src="assets/js/jquery.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>

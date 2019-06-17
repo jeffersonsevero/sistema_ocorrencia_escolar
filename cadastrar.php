@@ -1,65 +1,3 @@
-<?php
-session_start();
-require "config.php";
-
-if (isset($_POST['email']) && empty($_POST['email']) == false) {
-    $nome = $_POST['nome'];
-    $endereco = $_POST['endereco'];
-    $email = $_POST['email'];
-    $senha = md5($_POST['senha']);
-
-    $sql = "SELECT * FROM escolas WHERE email = :email";
-
-    $sql = $pdo->prepare($sql);
-
-    $sql->bindValue(":email", $email);
-    //$sql->bindValue(":senha", $senha);
-
-    $sql->execute();
-
-    if ($sql->rowCount() > 0) {
-
-        echo "<div class='alerta-geral'>
-                <div class='alert alert-danger' role='alert'>
-                    E-mail já cadastrado.
-                </div>
-              </div>";
-    }
-    else {
-        $sql = "INSERT INTO escola SET nome_escola = :nome, endereco = :endereco, email = :email, senha = :senha";
-
-        $sql = $pdo->prepare($sql);
-
-        $sql->bindValue(":nome", $nome);
-        $sql->bindValue(":endereco", $endereco);
-        $sql->bindValue(":email", $email);
-        $sql->bindValue(":senha", $senha);
-
-        $sql->execute();
-
-        echo "<div class='alerta-geral'>
-                <div class='alert alert-success' role='alert'>
-                    Usuário adicionado com sucesso
-                </div>
-              </div>";
-
-
-    }
-
-}   
-
-
-
-
-
-
-
-?>
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,6 +9,8 @@ if (isset($_POST['email']) && empty($_POST['email']) == false) {
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Cadastrar</title>
+    <link rel="stylesheet" href="assets/css/sweet.min.css">
+    <script src="assets/js/sweet.min.js"></script>
 </head>
 
 <body>
@@ -130,30 +70,70 @@ if (isset($_POST['email']) && empty($_POST['email']) == false) {
     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script src="assets/js/jquery.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
+
+
+
+<?php
+session_start();
+require "config.php";
+
+if (isset($_POST['email']) && empty($_POST['email']) == false) {
+    $nome = $_POST['nome'];
+    $endereco = $_POST['endereco'];
+    $email = $_POST['email'];
+    $senha = md5($_POST['senha']);
+
+    $sql = "SELECT * FROM escola WHERE email = :email";
+
+    $sql = $pdo->prepare($sql);
+
+    $sql->bindValue(":email", $email);
+    //$sql->bindValue(":senha", $senha);
+
+    $sql->execute();
+
+    if ($sql->rowCount() > 0) {
+
+        echo 
+        "<script>
+            Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'E-mail já cadastrado!',
+        })
+        </script>";
+        
+    }
+    else {
+        $sql = "INSERT INTO escola SET nome_escola = :nome, endereco = :endereco, email = :email, senha = :senha";
+
+        $sql = $pdo->prepare($sql);
+
+        $sql->bindValue(":nome", $nome);
+        $sql->bindValue(":endereco", $endereco);
+        $sql->bindValue(":email", $email);
+        $sql->bindValue(":senha", $senha);
+
+        $sql->execute();
+
+        echo "<script>
+        Swal.fire(
+          'Ok!',
+          'Instituição adicionada com sucesso!',
+          'success'
+        )
+        </script>";
+
+
+    }
+
+}   
+
+
+?>
+

@@ -1,49 +1,3 @@
-<?php
-require "config.php";
-
-
-session_start();
-
-if (isset($_POST['email']) && empty($_POST['email']) == false) {
-    $email = addslashes($_POST['email']);
-    $senha = md5(addslashes($_POST['senha']));
-
-
-
-    $sql = "SELECT * FROM escola WHERE email = :email AND senha = :senha";
-
-    $sql = $pdo->prepare($sql);
-
-    $sql->bindValue(":email", $email);
-    $sql->bindValue(":senha", $senha);
-
-    $sql->execute();
-
-    if ($sql->rowCount() > 0) {
-        $dados = $sql->fetch();
-
-        $_SESSION['id'] = $dados['id'];
-
-        echo "<div class='alerta-geral'>
-                <div class='alert alert-success' role='alert'>
-                    Usuário e/ou senha errados.
-                </div>
-              </div>";
-
-        header("Location: index.php");
-    } else {
-        echo "<div class='alerta-geral'>
-                <div class='alert alert-danger' role='alert'>
-                    Usuário e/ou senha errados.
-                </div>
-              </div>";
-    }
-}
-
-?>
-
-
-
 
 
 <!DOCTYPE html>
@@ -56,6 +10,8 @@ if (isset($_POST['email']) && empty($_POST['email']) == false) {
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="fontawesome/css/all.css">
+    <link rel="stylesheet" href="assets/css/sweet.min.css">
+    <script src="assets/js/sweet.min.js"></script>
     <title>Login - SOE</title>
 </head>
 
@@ -107,3 +63,52 @@ if (isset($_POST['email']) && empty($_POST['email']) == false) {
 </body>
 
 </html>
+
+
+
+
+
+
+
+<?php
+require "config.php";
+
+
+session_start();
+
+if (isset($_POST['email']) && empty($_POST['email']) == false) {
+    $email = addslashes($_POST['email']);
+    $senha = md5(addslashes($_POST['senha']));
+
+
+
+    $sql = "SELECT * FROM escola WHERE email = :email AND senha = :senha";
+
+    $sql = $pdo->prepare($sql);
+
+    $sql->bindValue(":email", $email);
+    $sql->bindValue(":senha", $senha);
+
+    $sql->execute();
+
+    if ($sql->rowCount() > 0) {
+        $dados = $sql->fetch();
+
+        $_SESSION['id'] = $dados['id'];
+       
+    
+        header("Location: index.php");
+
+    } else {
+        echo "<script>
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Usuário ou senha inválidos!',
+          
+    })
+    </script>";
+    }
+}
+
+?>

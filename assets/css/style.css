@@ -135,10 +135,11 @@ div.main-content{
 }
 
 .alerta-geral{
-    width: 700px;
+    max-width: 700px;
+    width: 100%;
     position: absolute;
     left: 25%;
-    top: 80%;
+    top: 90%;
 
 }
 

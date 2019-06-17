@@ -32,8 +32,8 @@ session_start();
     <div class="container">
         <h1>Lista de alunos</h1>
 
-        <table class="table" border="1">
-            <tr>
+        <table class="table table-striped table-bordered">
+            <tr class="table-primary">
                 <th>Nome</th>
                 <th>série</th>
                 <th>Nome do responsável</th>
