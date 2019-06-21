@@ -98,7 +98,7 @@ if(isset($_POST['acao'])){
     $mensagem = $_POST['mensagem'];
 
     $novaMensagem = $nomeEscola."     
-    Foi detectado que o aluno ".$nomeAluno." fez a seguinte situação: ".$mensagem."
+    Foi detectado que o aluno/aluna ".$nomeAluno." se envolveu em uma situação onde: ".$mensagem."
     ";
 
 
@@ -117,7 +117,7 @@ if(isset($_POST['acao'])){
             )
             </script>";
 
-            echo $response->getContent();
+            //echo $response->getContent();
 
             
         }

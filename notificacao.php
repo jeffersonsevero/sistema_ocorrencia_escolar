@@ -160,7 +160,7 @@ if (isset($_POST['acao']) && empty($_POST['acao']) == false) {
              <h3 style='text-align: center'>" . $nomeEscola . "</h3>   <br>
 
     Senhor/senhora " . $nomeResponsavel . ", foi detectado que o/a estudante " . $nomeAluno . ",  do " . $serie . "º ano 
-    desta instituição cometeu a seguinte situação: " . $mensagem . ". <br>
+    desta instituição se envolveu em uma situação onde: " . $mensagem . ". <br>
     Nossa missão é cultivar a transparência desta instituição e manter os pais informados sobre todos os passos dos
     seus filhos. <br><br>
     Esperamos que o comportamento ruin seja corrigido. <br><br>

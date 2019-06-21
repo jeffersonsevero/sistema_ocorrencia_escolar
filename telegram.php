@@ -109,15 +109,6 @@ function enviarMensagemTelegram($chatID, $mensagem, $token){
 
 if(isset($_POST['acao'])){
 
-    $sql = "SELECT * FROM escola WHERE id_escola = ".$_SESSION['id'];
-
-    $sql = $pdo->query($sql);
-    if($sql->rowCount() > 0){
-        $dados = $sql->fetch();
-        print_r($dados);
-        exit();
-    }
-
     $nomeAluno = $_POST['nome'];
     $serie = $_POST['serie'];
     $nomeResponsavel = $_POST['nomeResponsavel'];
@@ -126,7 +117,7 @@ if(isset($_POST['acao'])){
     $mensagem = $_POST['mensagem'];
 
     $novaMensagem = "Senhor/senhora ".$nomeResponsavel. ". Foi detectado que o aluno/aluna ".$nomeAluno.
-    " aluno do ".$serie."ª desta instituição cometeu a seguinte situação: ". $mensagem;
+    " aluno do ".$serie."ª se envolveu em uma situação onde: ". $mensagem;
 
     if(enviarMensagemTelegram($id, $novaMensagem, $token) == true){
         echo "<script>

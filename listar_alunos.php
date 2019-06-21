@@ -38,7 +38,7 @@ session_start();
                 <th>série</th>
                 <th>Nome do responsável</th>
                 <th>E-mail do responsável</th>
-                <th>Ações</th>
+                <th colspan="3">Ações</th>
             </tr>
 
             <?php

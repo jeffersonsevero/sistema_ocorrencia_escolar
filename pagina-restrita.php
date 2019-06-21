@@ -11,7 +11,7 @@ $quantidadeOcorrenciasEmCadaMes = array();
 $sql = "
 SELECT Month(data) as mes,  COUNT(Month(data)) as quantidade
 FROM ocorrencias
-WHERE id_escola = ".$_SESSION['id']."
+WHERE id_escola = " . $_SESSION['id'] . "
 GROUP BY Month(data)
 ORDER BY Month(data);
 ";
@@ -50,16 +50,15 @@ $consulta->bindValue(":id_escola", $_SESSION['id']);
 $consulta->execute();
 
 
-if($consulta->rowCount() > 0){
+if ($consulta->rowCount() > 0) {
     $dados = $consulta->fetchAll();
-    foreach($dados as $dadosPorSerie){
+    foreach ($dados as $dadosPorSerie) {
         $quantidadeOcorrenciasPorSerie[$dadosPorSerie['serie']] = $dadosPorSerie['contagem'];
     }
-   
 }
 
-for($i = 1; $i <= 9; $i++){
-    if($quantidadeOcorrenciasPorSerie[$i] == null){
+for ($i = 1; $i <= 9; $i++) {
+    if ($quantidadeOcorrenciasPorSerie[$i] == null) {
         $quantidadeOcorrenciasPorSerie[$i] = 0;
     }
 }
@@ -98,6 +97,16 @@ ksort($quantidadeOcorrenciasPorSerie);
     <div class="side-bar">
         <div class="topo">
             <h3>SOE</h3>
+            <?php
+            $sql = "SELECT * FROM escola WHERE id = ".$_SESSION['id'];
+            $sql = $pdo->query($sql);
+            if($sql->rowCount() > 0){
+                $dados = $sql->fetch();
+                $nome_escola = $dados['nome_escola'];
+                echo '<h5>'.$nome_escola.'</h5>'; 
+            }
+
+            ?>
         </div>
         <!--topo-->
         <div class="menu">
@@ -128,7 +137,7 @@ ksort($quantidadeOcorrenciasPorSerie);
         <div style="width: 600px" class="grafico">
             <canvas id="grafico2"></canvas>
         </div>
-       
+
 
     </div> <!-- main-content -->
 
@@ -154,10 +163,29 @@ ksort($quantidadeOcorrenciasPorSerie);
                         data: [
                             <?php echo implode(',', $quantidadeOcorrenciasEmCadaMes)   ?>
                         ],
-                        fill:false
+                        fill: false
                     }],
                 },
- 
+                options: {
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Número de ocorrências'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Mês'
+                            }
+                        }]
+                    }
+                },
+
+                
+
+
             });
 
 
@@ -168,15 +196,32 @@ ksort($quantidadeOcorrenciasPorSerie);
                     labels: ['1º', '2º', '3º', '4º', '5º', '6º', '7º', '8º', '9º'],
                     datasets: [{
                         label: 'Número de ocorrências por série',
-                        backgroundColor: 'red',
+                        backgroundColor: '#E74C3C',
                         borderColor: 'red',
                         data: [
                             <?php echo implode(',', $quantidadeOcorrenciasPorSerie)   ?>
                         ],
-                        fill:false
+                        fill: false
                     }],
                 },
- 
+                options: {
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Número de ocorrências'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Série'
+                            }
+                        }]
+                    }
+                },
+               
+
             });
 
 
